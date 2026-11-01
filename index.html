@@ -124,8 +124,8 @@ html,body{position:fixed;inset:0;width:100%;overflow:hidden;overscroll-behavior:
 .cust,.btn,.chip,.cbtn,.cprow,.back{transition:transform .2s var(--ease),background-color .2s}
 .cust:active{transform:scale(.975)}.btn:active{transform:scale(.96)}.chip:active,.cbtn:active{transform:scale(.94)}.back:active{transform:scale(.88)}
 .tt,.tt *{transition:background-color .4s ease,color .4s ease,border-color .4s ease,box-shadow .4s ease!important}
-.sws{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
-.sw{width:38px;height:38px;border-radius:50%;border:3px solid var(--card);box-shadow:0 0 0 1.5px var(--line);position:relative;flex:none;display:block;padding:0;transition:transform .25s var(--ease),box-shadow .25s}
+.sws{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.sw{width:34px;height:34px;border-radius:50%;border:3px solid var(--card);box-shadow:0 0 0 1.5px var(--line);position:relative;flex:none;display:block;padding:0;transition:transform .25s var(--ease),box-shadow .25s}
 .sw.on{box-shadow:0 0 0 2.5px var(--ink);transform:scale(1.1)}
 .sw.cu{background:conic-gradient(#e53935,#fdd835,#43a047,#00acc1,#1e88e5,#8e24aa,#e53935);overflow:hidden}
 .sw.cu::after{content:"✎";position:absolute;inset:0;display:grid;place-items:center;color:#fff;font-size:15px;text-shadow:0 0 3px rgba(0,0,0,.7);pointer-events:none}
@@ -133,7 +133,21 @@ html,body{position:fixed;inset:0;width:100%;overflow:hidden;overscroll-behavior:
 .nb{text-align:center!important}.un{align-self:center;color:var(--mute);font-size:16px;flex:none}
 .qd{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 10px}
 .dh{font-size:13px;color:var(--mute);min-height:18px;margin-top:6px}
-.dn{position:absolute;opacity:0;pointer-events:none;width:1px;height:1px;border:0;padding:0}
+.dn{position:absolute;left:0;top:0;opacity:0;pointer-events:none;width:1px;height:1px;border:0;padding:0}
+.sheet{overflow-x:hidden;overscroll-behavior:contain}
+.sheet.st{display:flex;flex-direction:column;padding:0;overflow:hidden}
+.sth{display:flex;align-items:center;justify-content:space-between;padding:16px 18px 6px;flex:none}
+.sheet .sth h3{margin:0}
+.stx{width:36px;height:36px;border-radius:50%;background:var(--bg);color:var(--mute);font-size:16px;flex:none}
+.sbd{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;padding:0 18px 10px;-webkit-overflow-scrolling:touch}
+.stf{flex:none;padding:12px 18px calc(12px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);background:var(--card)}
+.gt{font-size:13px;font-weight:700;color:var(--mute);margin:16px 4px 8px}
+.gp{background:var(--bg);border-radius:14px;padding:14px 14px 2px}
+.gp .f input{background:var(--card)}
+.gp .btn.l{background:var(--card);border:1px solid var(--line)}
+.hn{display:block;font-size:12px;margin-top:6px}
+.lnk{background:none;color:var(--green);font-weight:700;font-size:14px;padding:2px 0 14px}
+[hidden]{display:none!important}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition-duration:.01ms!important}}
 </style>
 </head>
@@ -256,10 +270,10 @@ function applyColors(){var s=document.documentElement.style,dk=isDark(),CD='#1B2
  if(isHex(r)){s.setProperty('--red',dk?ens(r,CD,4.5,'#ffffff'):ens(r,'#ffffff',4.5,'#000000'));s.setProperty('--red-s',dk?mix(r,CD,.75):mix(r,'#ffffff',.88))}}
 try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',function(){if(data.theme==='auto')applyColors()})}catch(e){}
 function smooth(){var h=document.documentElement;h.classList.add('tt');clearTimeout(smooth.t);smooth.t=setTimeout(function(){h.classList.remove('tt')},450)}
-var ACC=['#1E5A3C','#1F5FBF','#0F766E','#6D3FC4','#C2185B','#D9631E','#8A6D1D','#374151'],RED=['#B4473F','#D32F2F','#E65100','#AD1457','#5D4037','#374151'];
+var ACC=['#1E5A3C','#1F5FBF','#0F766E','#6D3FC4','#C2185B','#D9631E'],RED=['#B4473F','#D32F2F','#E65100','#AD1457','#5D4037','#374151'];
 function swHTML(k,P){var v=(data[k]||P[0]).toLowerCase(),is=P.some(function(c){return c.toLowerCase()===v});
  return P.map(function(c){return '<button type="button" class="sw'+(c.toLowerCase()===v?' on':'')+'" data-k="'+k+'" data-c="'+c+'" style="background:'+c+'" aria-label="'+c+'"></button>'}).join('')+'<label class="sw cu'+(is?'':' on')+'"'+(is?'':' style="background:'+v+'"')+'><input type="color" data-k="'+k+'" value="'+v+'"></label>'}
-function colsHTML(){return '<div class="f">لون التطبيق<div class="sws" id="sw_acc">'+swHTML('acc',ACC)+'</div></div><div class="f">لون الديون والتنبيهات<div class="sws" id="sw_red">'+swHTML('red',RED)+'</div></div><button type="button" class="btn l rip" id="rc" style="width:100%;margin-bottom:12px">استعادة الألوان الأصلية</button>'}
+function colsHTML(){return '<div class="f">لون التطبيق<div class="sws" id="sw_acc">'+swHTML('acc',ACC)+'</div></div><div class="f">لون الديون والتنبيهات<div class="sws" id="sw_red">'+swHTML('red',RED)+'</div></div><button type="button" class="lnk" id="rc">↺ استعادة الألوان الأصلية</button>'}
 function refSw(){var a=$('sw_acc'),r=$('sw_red');if(a)a.innerHTML=swHTML('acc',ACC);if(r)r.innerHTML=swHTML('red',RED)}
 document.addEventListener('click',function(e){var b=e.target.closest('button.sw');if(b){var k=b.dataset.k,P=k==='acc'?ACC:RED;smooth();if(b.dataset.c.toLowerCase()===P[0].toLowerCase())delete data[k];else data[k]=b.dataset.c;applyColors();save();refSw();return}
  if(e.target.closest('#rc')){smooth();delete data.acc;delete data.red;applyColors();save();refSw()}});
@@ -314,23 +328,40 @@ $("delCust").onclick=function(){
 };
 
 /* ---------- النوافذ السفلية ---------- */
-function openSheet(html){dueUpd=null;$("sheet").innerHTML=html;$("sheet").classList.add("on");$("shade").classList.add("on");history.pushState({s:"modal"},"");bindRip()}
+function openSheet(html){dueUpd=null;$("sheet").classList.remove("st");$("sheet").innerHTML=html;$("sheet").classList.add("on");$("shade").classList.add("on");history.pushState({s:"modal"},"");bindRip()}
 function closeSheetUI(){$("sheet").classList.remove("on");$("shade").classList.remove("on");$('cp').classList.remove('on')}
 $("shade").onclick=function(){history.back()};
 function check(inp,wrap){var ok=inp.value.trim()!==""&&!((inp.type==="number"||inp.dataset.n)&&!(pf(inp.value)>0));
  wrap.classList.toggle("bad",!ok);if(!ok){wrap.classList.remove("shake");void wrap.offsetWidth;wrap.classList.add("shake");inp.focus();toast("أكمل الحقل المطلوب",true)}return ok}
 
+var hasCP=!!(navigator.contacts&&navigator.contacts.select&&window.ContactsManager);
+function normPhone(raw){var s=String(raw||'').trim();if(!s)return '';var plus=s.charAt(0)==='+',d=s.replace(/[\u0660-\u0669]/g,function(x){return x.charCodeAt(0)-1632}).replace(/[\u06F0-\u06F9]/g,function(x){return x.charCodeAt(0)-1776}).replace(/\D/g,'');
+ if(!d)return '';if(plus)return d;if(d.indexOf('00')===0)return d.slice(2);
+ var cc=String(data.cc||'').replace(/\D/g,'');if(cc&&d.charAt(0)==='0')return cc+d.slice(1);return d}
+function phoneRow(v){return '<label class="f">رقم الهاتف (مع رمز الدولة)<div class="amrow"><input id="ph" type="tel" dir="ltr" placeholder="9665xxxxxxxx" value="'+esc(v||'').replace(/"/g,'&quot;')+'">'+(hasCP?'<button type="button" class="cbtn" id="pk2" style="min-width:104px">👤 من جهاتي</button>':'')+'</div><div class="qd" id="pc" hidden style="margin:8px 0 0"></div></label>'}
+function wirePick(){var b=$('pk2');if(!b)return;b.onclick=function(){
+ navigator.contacts.select(['name','tel'],{multiple:false}).then(function(r){
+  if(!r||!r.length)return;var c=r[0],nm=((c.name&&c.name[0])||'').trim(),tels=[],seen={};
+  (c.tel||[]).forEach(function(t){var n=normPhone(t);if(n&&!seen[n]){seen[n]=1;tels.push(n)}});
+  if(nm&&!$('nm').value.trim())$('nm').value=nm;
+  if(!tels.length){toast('هاد الاتصال ما إله رقم',true);return}
+  $('ph').value=tels[0];var box=$('pc');
+  if(tels.length>1){box.hidden=false;box.innerHTML=tels.map(function(n,i){return '<button type="button" class="chip'+(i?'':' on')+'" data-ph="'+n+'">'+n+'</button>'}).join('');box.onclick=function(e){var x=e.target.closest('[data-ph]');if(!x)return;$('ph').value=x.dataset.ph;box.querySelectorAll('.chip').forEach(function(y){y.classList.toggle('on',y===x)})}}else{box.hidden=true;box.innerHTML=''}
+  toast(tels[0].charAt(0)==='0'?'أضف رمز الدولة بالإعدادات لتحويل الأرقام المحلية':'تم اختيار الرقم')
+ }).catch(function(e){if(e&&e.name!=='AbortError')toast('تعذّر فتح جهات الاتصال',true)})}}
+
 $("fab").onclick=function(){
- openSheet('<h3>زبون جديد</h3><label class="f" id="fn">الاسم<input id="nm" autocomplete="off"><span class="err">الاسم مطلوب</span></label><label class="f">رقم الهاتف (مع رمز الدولة)<input id="ph" type="tel" dir="ltr" placeholder="9665xxxxxxxx"></label><label class="f" id="fa">الدين الحالي (اختياري)<div class="amrow"><input id="am" type="text" inputmode="decimal" dir="ltr" data-n="1" autocomplete="off">'+curBtn('cu2',dc())+'</div><span class="err">أدخل مبلغاً صحيحاً</span></label><button class="btn g rip" style="width:100%" id="ok">حفظ الزبون</button>');
+ openSheet('<h3>زبون جديد</h3><label class="f" id="fn">الاسم<input id="nm" autocomplete="off"><span class="err">الاسم مطلوب</span></label>'+phoneRow('')+'<label class="f" id="fa">الدين الحالي (اختياري)<div class="amrow"><input id="am" type="text" inputmode="decimal" dir="ltr" data-n="1" autocomplete="off">'+curBtn('cu2',dc())+'</div><span class="err">أدخل مبلغاً صحيحاً</span></label><button class="btn g rip" style="width:100%" id="ok">حفظ الزبون</button>');
+ wirePick();
  $("ok").onclick=function(){
   if(!check($("nm"),$("fn")))return;
-  var a=pf($("am").value)||0,c={id:uid(),name:$("nm").value.trim(),phone:$("ph").value.trim(),tx:[]};
+  var a=pf($("am").value)||0,c={id:uid(),name:$("nm").value.trim(),phone:normPhone($("ph").value),tx:[]};
   if(a>0)c.tx.push({id:uid(),type:"debt",amt:a,note:"رصيد افتتاحي",cu:$('cu2').value,ts:Date.now()});
   data.customers.push(c);save();renderHome();history.back();toast("تم حفظ الزبون")};
  setTimeout(function(){$("nm").focus()},280);
 };
-$('edCust').onclick=function(){openSheet('<h3>تعديل الزبون</h3><label class="f" id="fn">الاسم<input id="nm" value="'+esc(cur.name).replace(/"/g,'&quot;')+'"><span class="err">الاسم مطلوب</span></label><label class="f">رقم الهاتف (مع رمز الدولة)<input id="ph" type="tel" dir="ltr" value="'+esc(cur.phone||'')+'"></label><button class="btn g rip" style="width:100%" id="ok">حفظ</button>');
- $('ok').onclick=function(){if(!check($('nm'),$('fn')))return;cur.name=$('nm').value.trim();cur.phone=$('ph').value.trim();save();renderDetail();renderHome();history.back();toast('تم الحفظ')}};
+$('edCust').onclick=function(){openSheet('<h3>تعديل الزبون</h3><label class="f" id="fn">الاسم<input id="nm" value="'+esc(cur.name).replace(/"/g,'&quot;')+'"><span class="err">الاسم مطلوب</span></label>'+phoneRow(cur.phone)+'<button class="btn g rip" style="width:100%" id="ok">حفظ</button>');
+ wirePick();$('ok').onclick=function(){if(!check($('nm'),$('fn')))return;cur.name=$('nm').value.trim();cur.phone=normPhone($('ph').value);save();renderDetail();renderHome();history.back();toast('تم الحفظ')}};
 var rng={f:0,t:Infinity};function inR(t){return t.ts>=rng.f&&t.ts<=rng.t}
 function stData(){var c=cur,pre={},tot={},cl={},list=[];
  c.tx.forEach(function(t){if(t.ts<rng.f){var k=tc(c,t);pre[k]=(pre[k]||0)+(t.type==='debt'?t.amt:-t.amt)}});
@@ -468,7 +499,13 @@ function txForm(id){var e0=id&&cur.tx.find(function(t){return t.id===id});
  setTimeout(function(){$("am").focus()},280);
 };
 $("shopBtn").onclick=function(){
- openSheet('<h3>الإعدادات</h3><label class="f" id="fs">اسم المحل (يظهر في الرسائل)<input id="sn" value="'+esc(data.shop).replace(/"/g,"&quot;")+'"><span class="err">الاسم مطلوب</span></label><div class="f">العملة الافتراضية'+curBtn('cu',dc(),1)+'</div><div class="f">المظهر<div class="chips" id="thm" style="margin:6px 0 0">'+thmBtns()+'</div></div>'+colsHTML()+'<label class="f">رقم سري للقفل (4 أرقام على الأقل، اكتب 0 للإلغاء)<input id="pn" type="tel" inputmode="numeric" maxlength="8" placeholder="'+(data.pin?'مفعّل — اتركه فارغاً للإبقاء':'بدون قفل')+'"></label><div class="f">نسخة احتياطية (ملف)<div class="row2" style="margin-top:8px"><button type="button" class="btn l rip" id="ex">💾 حفظ كل شي بملف</button><button type="button" class="btn l rip" id="im">📂 استيراد من ملف</button></div><div class="dh" id="ic" style="margin-top:0">'+(data.lastBackup?'آخر نسخة: '+ymd(data.lastBackup):'لم تُحفظ نسخة بعد')+'</div><input type="file" id="fi" class="dn" tabindex="-1" aria-hidden="true"></div><button class="btn g rip" style="width:100%" id="ok">حفظ</button>');
+ openSheet('<div class="sth"><h3>الإعدادات</h3><button type="button" class="stx" id="stx" aria-label="إغلاق">✕</button></div><div class="sbd">'
+ +'<div class="gt">المحل</div><div class="gp"><label class="f" id="fs">اسم المحل (يظهر في الرسائل)<input id="sn" value="'+esc(data.shop).replace(/"/g,"&quot;")+'"><span class="err">الاسم مطلوب</span></label><div class="f">العملة الافتراضية'+curBtn('cu',dc(),1)+'</div><label class="f">رمز الدولة للأرقام المحلية<input id="cc" type="tel" inputmode="numeric" dir="ltr" maxlength="4" placeholder="مثال: 963" value="'+esc(data.cc||'')+'"><span class="hn">يحوّل الأرقام اللي بتبدأ بصفر (مثل 099…) لرقم دولي تلقائياً</span></label></div>'
+ +'<div class="gt">المظهر والألوان</div><div class="gp"><div class="f">المظهر<div class="chips" id="thm" style="margin:6px 0 0">'+thmBtns()+'</div></div>'+colsHTML()+'</div>'
+ +'<div class="gt">الأمان</div><div class="gp"><label class="f">رقم سري للقفل<input id="pn" type="tel" inputmode="numeric" maxlength="8" placeholder="'+(data.pin?'مفعّل — اتركه فارغاً للإبقاء':'بدون قفل')+'"><span class="hn">4 أرقام على الأقل · اكتب 0 للإلغاء</span></label></div>'
+ +'<div class="gt">النسخ الاحتياطي</div><div class="gp"><div class="f"><div class="row2"><button type="button" class="btn l rip" id="ex">💾 حفظ نسخة</button><button type="button" class="btn l rip" id="im">📂 استيراد</button></div><div class="dh" id="ic" style="margin-top:0">'+(data.lastBackup?'آخر نسخة: '+ymd(data.lastBackup):'لم تُحفظ نسخة بعد')+'</div><input type="file" id="fi" class="dn" tabindex="-1" aria-hidden="true"></div></div>'
+ +'</div><div class="stf"><button class="btn g rip" style="width:100%" id="ok">حفظ</button></div>');
+ $("sheet").classList.add("st");$("stx").onclick=function(){history.back()};
  $('ex').onclick=async function(){try{var name='daftar-backup-'+iso(Date.now())+'.json',blob=new Blob([JSON.stringify({app:'daftar',v:1,at:Date.now(),data:data})],{type:'application/json'}),done=false;
   try{var dl=await claude.use('downloads');if(dl){await dl.save({filename:name,data:blob});done=true}}catch(e){if(e&&e.code==='declined')return}
   if(!done){var fl=new File([blob],name,{type:'application/json'});if(navigator.canShare&&navigator.canShare({files:[fl]})){try{await navigator.share({files:[fl],title:name});done=true}catch(e){if(e&&e.name==='AbortError')return}}}
@@ -489,7 +526,7 @@ $("shopBtn").onclick=function(){
      var ids={};m.tx.forEach(function(t){ids[t.id]=1});c.tx.forEach(function(t){if(!ids[t.id]){m.tx.push(t);at++}})});
     fin(nd,ac||at?'تمت الإضافة: '+num(ac)+' زبون جديد و'+num(at)+' عملية':'لا يوجد شي جديد للإضافة')}
   }).catch(function(){toast('الملف غير صالح',true)})};
- $("ok").onclick=function(){if(!check($("sn"),$("fs")))return;data.shop=$('sn').value.trim();data.cur=$('cu').value.trim();var pv=$('pn').value.replace(/\D/g,''),fin=function(){save();renderHome();history.back();toast('تم الحفظ')};if(pv==='0'){delete data.pin;delete data.pl;fin()}else if(pv){if(pv.length<4){toast('الرقم السري 4 أرقام على الأقل',true);return}H(pv).then(function(h){data.pin=h;data.pl=pv.length;fin()})}else fin()};
+ $("ok").onclick=function(){if(!check($("sn"),$("fs")))return;data.shop=$('sn').value.trim();data.cur=$('cu').value.trim();data.cc=$('cc').value.replace(/\D/g,'');var pv=$('pn').value.replace(/\D/g,''),fin=function(){save();renderHome();history.back();toast('تم الحفظ')};if(pv==='0'){delete data.pin;delete data.pl;fin()}else if(pv){if(pv.length<4){toast('الرقم السري 4 أرقام على الأقل',true);return}H(pv).then(function(h){data.pin=h;data.pl=pv.length;fin()})}else fin()};
 };
 
 /* ---------- واتساب ---------- */
