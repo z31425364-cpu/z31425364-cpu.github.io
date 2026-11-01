@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl" data-theme="dark">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-content">
 <title>دفتر</title>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#1E5A3C">
@@ -91,7 +91,7 @@ header .ib{color:var(--on);width:40px;height:40px;border-radius:50%;font-size:20
 .tx{cursor:pointer}.del.ed{color:var(--green);border-color:var(--green)}
 .bar.three{gap:8px}.bar.three .btn{font-size:14px;padding:13px 4px}
 .row2{display:flex;gap:8px;margin-bottom:12px}.f textarea.bk{height:90px;direction:ltr;font-size:12px}
-#lock{position:absolute;inset:0;z-index:30;background:var(--bg);display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:30px}#lock.on{display:flex}#lock h2{margin:0;font-size:30px}#lock input{width:210px;text-align:center;font-size:28px;letter-spacing:8px;padding:12px;border-radius:12px;border:1.5px solid var(--line);background:var(--card)}
+#lock{position:absolute;inset:0;z-index:30;background:var(--bg);display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:30px}#lock.on{display:flex}#lock h2{margin:0;font-size:30px}#lock input{-webkit-text-security:disc;width:210px;text-align:center;font-size:28px;letter-spacing:8px;padding:12px;border-radius:12px;border:1.5px solid var(--line);background:var(--card)}
 input[data-n]{text-align:right;direction:ltr}
 input[data-d]{text-align:right;direction:ltr}
 html,body{touch-action:pan-x pan-y;-webkit-text-size-adjust:100%;text-size-adjust:100%}
@@ -186,7 +186,7 @@ html,body{position:fixed;inset:0;width:100%;overflow:hidden;overscroll-behavior:
  <div class="shade" id="shade"></div>
  <div class="sheet" id="sheet"></div>
  <div class="cp" id="cp"><div class="cpbox" id="cpbox"></div></div>
- <div id="lock"><h2>دفتر</h2><input id="pin" type="password" inputmode="numeric" maxlength="8" autocomplete="off" placeholder="••••"><div id="pe" style="color:var(--red);min-height:22px"></div></div>
+ <div id="lock"><h2>دفتر</h2><input id="pin" type="tel" inputmode="numeric" maxlength="8" autocomplete="off" placeholder="••••"><div id="pe" style="color:var(--red);min-height:22px"></div></div>
  <div id="toast"></div>
 </div>
 <script>
@@ -252,6 +252,7 @@ function pf(s){return parseFloat(String(s).replace(/,/g,''))}
 function fnum(el){var s=el.value.replace(/[\u0660-\u0669]/g,function(d){return d.charCodeAt(0)-1632}).replace(/[\u06F0-\u06F9]/g,function(d){return d.charCodeAt(0)-1776}).replace(/[\u066B\u060C]/g,'.').replace(/[^\d.]/g,''),p=s.split('.'),i=p[0].replace(/^0+(?=\d)/,'').replace(/\B(?=(\d{3})+(?!\d))/g,',');el.value=p.length>1?i+'.'+p.slice(1).join('').slice(0,2):i}
 $('sheet').addEventListener('input',function(e){if(e.target.dataset.n)fnum(e.target);if(e.target.dataset.d)fdate(e.target);if(dueUpd&&(e.target.id==='dt'||(e.target.closest&&e.target.closest('#fdu'))))dueUpd(e.target)});
 window.addEventListener('scroll',function(){window.scrollTo(0,0)});
+if(window.visualViewport){var vv=window.visualViewport,fixVV=function(){$('app').style.height=vv.height+'px';window.scrollTo(0,0)};vv.addEventListener('resize',fixVV);vv.addEventListener('scroll',function(){window.scrollTo(0,0)});fixVV()}
 document.addEventListener('contextmenu',function(e){if(!e.target.closest('input,textarea'))e.preventDefault()});
 document.addEventListener('gesturestart',function(e){e.preventDefault()});
 function dstr(ts){var d=new Date(ts),p=function(n){return String(n).padStart(2,'0')};return p(d.getDate())+'/'+p(d.getMonth()+1)+'/'+d.getFullYear()}
@@ -359,7 +360,8 @@ $("delCust").onclick=function(){
 };
 
 /* ---------- النوافذ السفلية ---------- */
-function openSheet(html){dueUpd=null;$("sheet").classList.remove("st");$("sheet").innerHTML=html;$("sheet").classList.add("on");$("shade").classList.add("on");history.pushState({s:"modal"},"");bindRip()}
+function noFill(root){root.querySelectorAll("input,textarea").forEach(function(e){e.setAttribute("autocomplete","off");e.setAttribute("autocorrect","off");e.setAttribute("spellcheck","false");if(!e.name)e.name="f"+Math.random().toString(36).slice(2,8);e.setAttribute("data-lpignore","true");e.setAttribute("data-form-type","other")})}
+function openSheet(html){dueUpd=null;$("sheet").classList.remove("st");$("sheet").innerHTML=html;noFill($("sheet"));$("sheet").classList.add("on");$("shade").classList.add("on");history.pushState({s:"modal"},"");bindRip()}
 function closeSheetUI(){$("sheet").classList.remove("on");$("shade").classList.remove("on");$('cp').classList.remove('on')}
 $("shade").onclick=function(){history.back()};
 function check(inp,wrap){var ok=inp.value.trim()!==""&&!((inp.type==="number"||inp.dataset.n)&&!(pf(inp.value)>0));
@@ -614,7 +616,7 @@ window.addEventListener("popstate",function(e){onState(e.state&&e.state.s||"root
 /* ---------- البدء ---------- */
 openDB().then(load).then(function(){
  history.replaceState({s:"root"},"");history.pushState({s:"home"},"");
- mig(data);applyTheme();renderHome();bindRip();lockInit();checkDue();
+ mig(data);noFill(document.body);applyTheme();renderHome();bindRip();lockInit();checkDue();
  document.addEventListener('visibilitychange',function(){if(!document.hidden){checkDue();renderBanner()}});
  setInterval(function(){if(!document.hidden){checkDue();renderBanner()}},60000);
 });
